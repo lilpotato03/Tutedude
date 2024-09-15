@@ -3,6 +3,8 @@ import express from "express"
 import bodyParser from "body-parser"
 import { config } from "dotenv"
 import { MongoClient } from "mongodb"
+import jwt from "jsonwebtoken"
+import cookieParser from "cookie-parser"
 
 //Initializing 
 var users;
@@ -11,16 +13,17 @@ var profiles;
 var db;
 const app=express()
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(cookieParser());
 config()
-const port=process.env.PORT
-const client=new MongoClient(process.env.MONGO_URI)
+const port=process.env.PORT//PORT
+const client=new MongoClient(process.env.MONGO_URI)//New Client
 async function initialization(){
     try{
-        await client.connect();
-        db=client.db('app');
-        users=db.collection('users');
-        profiles=db.collection('profiles');
-        sessions=db.collection('sessions');
+        await client.connect();//connecting to mongo atlas
+        db=client.db('app');//connecting to db
+        users=db.collection('users');//users collection
+        profiles=db.collection('profiles');//profiles collection
+        sessions=db.collection('sessions');//user-sessions collection 
         console.log('Initialized');
     }catch(e){
         console.log('Error initializing')
@@ -37,10 +40,27 @@ app.listen(port,()=>{
     }
 })
 
+async function createToken(req,res){
+    const secret=process.env.JWT_SECRET;
+    const payload={Email:req.body.Email}
+    const token=jwt.sign(payload,secret);
+    return token;
+}
+async function verifyToken(req,res,next){
+    try{
+        const secret=process.env.JWT_SECRET
+        const result=jwt.verify(req.cookies.token,secret);
+        res.status(400).send(result);
+        next();
+    }catch(e){
+        res.status(400).send('Not authorized');
+    }
+}
+//Routes
 app.post('/signup',async(req,res)=>{
     try{
         const data=req.body;
-        if(await users.findOne({Email:data.Email})){
+        if(await users.findOne({Email:data.Email})){ //Checiking if email exists
             console.log(await users.findOne({Email:data.Email}))
             res.send('User already exists,try logging in');
         }else{
@@ -56,9 +76,11 @@ app.post('/signup',async(req,res)=>{
 app.post('/login',async(req,res)=>{
     try{
         const data=req.body;
-        if(await users.findOne({Email:data.Email,Password:data.Password})){
+        if(await users.findOne({Email:data.Email,Password:data.Password})){//Checking for user
             console.log(`${data.Email} signed in `);
-            res.send('Succesfully Logged in');
+            const token=await createToken(req,res);
+            res.cookie("token",token);
+            res.status(200).send('Succesfully Logged in');
         }else{
             console.log(`${data.Email} login attempt failed`);
             res.send('Incorrect password or email');
@@ -68,6 +90,9 @@ app.post('/login',async(req,res)=>{
         res.send('Login not available right now');
     }
 })
-//Routes
+
+app.post('/verify',verifyToken,(req,res)=>{
+
+})
 
 
