@@ -14,7 +14,7 @@ function SignUp() {
   return (
     <div className="Base">
         <div className="SignUp">
-            <div className="h-full flex flex-col gap-y-5 rounded-md items-center p-5 text-white ">
+            <div className="h-full flex flex-col gap-y-5 rounded-md items-center p-5 text-neutral-700">
                 <h1 className="text-[40px] font-bold">SignUp</h1>
                 <form className="flex flex-col gap-y-5 relative" onSubmit={handleSubmit}>
                     <label htmlFor="Name">Name</label>
@@ -24,7 +24,7 @@ function SignUp() {
                     <label htmlFor="Password">Password</label>
                     <input type="password" name="Password" placeholder="Enter text" required/>
                     <Link to='/login'>Already have an account?Login.</Link>
-                    <button type="submit" className="p-4 text-[20px] bg-green-500 rounded-md font-bold">SignUp</button>
+                    <button type="submit" className="p-4 text-[20px] blue-gradient text-white rounded-md font-bold">SignUp</button>
                 </form>
                 <h2 className="text-[18px] w-full">{status}</h2>
             </div>

@@ -4,15 +4,21 @@
 
 @layer components{
   .Base{
-    @apply w-[100vw] h-[100vh] bg-neutral-800 flex p-5 justify-center
+    @apply w-[100vw] h-[100vh] bg-white flex p-5 justify-center
   }
-  .Login , .SignUp{
-    @apply flex h-full w-full max-w-[30rem]  bg-neutral-700 rounded-lg justify-center p-4
+  .Login , .SignUp {
+    @apply flex h-full w-full max-w-[30rem]  bg-neutral-100 rounded-lg justify-center p-4
+  }
+  .Home{
+    @apply flex h-full w-full items-center p-4 flex-col gap-y-4
   }
   .Login label,.SignUp label{
-    @apply text-[20px] font-semibold
+    @apply text-[20px] font-semibold 
   }
   .Login input,.SignUp input{
-    @apply p-4 rounded-md bg-neutral-600 text-[20px] 
+    @apply p-4 rounded-md bg-neutral-200 text-[20px] 
+  }
+  .blue-gradient{
+    @apply bg-gradient-to-r from-sky-400   to-indigo-700 
   }
 }
