@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {Link} from "react-router-dom"
+import axios from "axios"
 function Login() {
-  const handleSubmit=(e)=>{
-    e.preventDefault();
+   const [status,setStatus]=useState('');
+  const handleSubmit=async(e)=>{
+    await e.preventDefault();
     const formData=new FormData(e.target);
     const payload=Object.fromEntries(formData);
-    console.log(payload);
+    const res=await axios.post('/login',payload,{headers:{"Content-Type":"application/x-www-form-urlencoded"}})
+    setStatus(res.data)
   }
-  const [status,setStatus]=useState('');
+
+ 
   return (
     <div className="Base">
       <div className="Login">
@@ -15,9 +19,9 @@ function Login() {
             <h1 className="text-[40px] font-bold">Login</h1>
             <form className="flex flex-col gap-y-5 relative" onSubmit={handleSubmit}>
                 <label htmlFor="Email">Email</label>
-                <input type="text" name="Email" placeholder="Enter text"/>
+                <input type="text" name="Email" placeholder="Enter text" required/>
                 <label htmlFor="Password">Password</label>
-                <input type="password" name="Password" placeholder="Enter text"/>
+                <input type="password" name="Password" placeholder="Enter text" required/>
                 <Link to='/signup'>Dont have an account?.SignUp</Link>
                 <button type="submit" className="p-4 text-[20px] bg-green-500 rounded-md font-bold">Login</button>
             </form>
