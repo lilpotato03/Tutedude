@@ -8,7 +8,6 @@ import cookieParser from "cookie-parser"
 
 //Initializing 
 var users;
-var sessions;
 var profiles;
 var db;
 const app=express()
