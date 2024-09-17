@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Tag from '../components/Tag';
 import Tag_Adder from '../components/Tag_Adder';
 function SetupProfile() {
 const [status,setStatus]=useState('');
 const [inter,setInter]=useState([]);
+const Navigate=useNavigate();
 const handleSubmit=async(e)=>{
         await e.preventDefault();
         if(check()){
@@ -15,6 +16,9 @@ const handleSubmit=async(e)=>{
             payload['Interests']=inter;
             const res=await axios.post('/setup_profile',payload,{headers:{"Content-Type":"application/x-www-form-urlencoded"}})
             setStatus(res.data)
+            setTimeout(()=>{
+                Navigate('/')
+            },1800)
         }
         else{
 

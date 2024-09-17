@@ -70,6 +70,7 @@ app.post('/signup',async(req,res)=>{
             res.send('User already exists,try logging in');
         }else{
             await users.insertOne(data);
+            const token=await createToken(req,res);
             res.cookie("token",token,{expires: new Date(Date.now() + 1000*60*60*24*2)});
             res.status(200).send('User succesfully signed up');
             console.log(`Added user ${data.Email}`)
@@ -225,13 +226,19 @@ app.post('/add_friend',verifyToken,async(req,res)=>{
         const data=req.body
         const rec=await profiles.findOne({Username:data.Receiver})
         if(!rec.Friends.includes(Sender)&&Sender!==data.Receiver){
-            await profiles.updateOne({Username:data.Receiver},{$addToSet:{Friends:Sender}})
+            await profiles.updateOne({Username:data.Receiver},{$addToSet:{Friends:Sender},$pull: {Requests: Sender}})
             await profiles.updateOne({Username:Sender},{$addToSet:{Friends:data.Receiver}})
-            await profiles.updateOne({Username:data.Receiver},{$pull:{ Requests:Sender}})
         }
         res.send('Succesfully request')
     }catch(e){
         console.log(e.message)
     }
 })
-
+app.get('/sign_out',verifyToken,async(req,res)=>{
+    try{
+        res.clearCookie('token');
+        res.send('Logged Out');
+    }catch(e){
+        res.send('Error signing Out')
+    }
+})
