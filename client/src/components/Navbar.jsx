@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 function Navbar() {
-  const [user,setUser]=useState(false);
+  const [user,setUser]=useState(true);
   return (
     <div className='w-full h-[4rem] bg-neutral-100 rounded-md flex items-center justify-between px-4 shadow-neutral-300  shadow-md'>
         <div className="logo flex items-center gap-x-2">

@@ -9,13 +9,13 @@
   .Login , .SignUp {
     @apply flex h-full w-full max-w-[30rem]  bg-neutral-100 rounded-lg justify-center p-4
   }
-  .Home{
+  .Home ,.Setup_Profile{
     @apply flex h-full w-full items-center p-4 flex-col gap-y-4
   }
-  .Login label,.SignUp label{
+  .Login label,.SignUp label ,.Setup_Profile label{
     @apply text-[20px] font-semibold 
   }
-  .Login input,.SignUp input{
+  .Login input,.SignUp input ,.Setup_Profile input, .Setup_Profile textarea{
     @apply p-4 rounded-md bg-neutral-200 text-[20px] 
   }
   .blue-gradient{

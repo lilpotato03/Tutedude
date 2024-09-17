@@ -23,7 +23,6 @@ async function initialization(){
         db=client.db('app');//connecting to db
         users=db.collection('users');//users collection
         profiles=db.collection('profiles');//profiles collection
-        sessions=db.collection('sessions');//user-sessions collection 
         console.log('Initialized');
     }catch(e){
         console.log('Error initializing')
@@ -50,7 +49,7 @@ async function verifyToken(req,res,next){
     try{
         const secret=process.env.JWT_SECRET
         const result=jwt.verify(req.cookies.token,secret);
-        res.status(400).send(result);
+        console.log(result);
         next();
     }catch(e){
         res.status(400).send('Not authorized');
@@ -65,7 +64,8 @@ app.post('/signup',async(req,res)=>{
             res.send('User already exists,try logging in');
         }else{
             await users.insertOne(data);
-            res.send('User succesfully signed up');
+            res.cookie("token",token);
+            res.status(200).send('User succesfully signed up');
             console.log(`Added user ${data.Email}`)
         }
     }catch(e){
@@ -91,8 +91,32 @@ app.post('/login',async(req,res)=>{
     }
 })
 
+app.post('/setup_profile',verifyToken,async (req,res)=>{
+    try{
+        const user_data=jwt.verify(req.cookies.token,process.env.JWT_SECRET);
+        const data=req.body;
+        if(await profiles.findOne({Username:data.Username})){
+            res.status(200).send('Username already exists,choose another one');
+        }else{
+            await profiles.insertOne({
+                Username:data.Username,
+                Email:user_data.Email,
+                Bio:data.Bio,
+                Interest:data.Interests,
+                Requests:[],
+                Friends:[]
+            })
+            const token=jwt.sign({Email:user_data.Email,Username:data.Username},process.env.JWT_SECRET)
+            res.cookie("token",token);
+            res.status(200).send(`Added ${data.Username}'s profile`)
+        }
+    }catch(e){
+        res.status(400).send('Something went wrong');
+        console.log(e.message);
+    }
+})
 app.post('/verify',verifyToken,(req,res)=>{
-
+    res.sendStatus(200)
 })
 
 
