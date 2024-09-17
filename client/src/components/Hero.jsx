@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { MainContext } from '../contexts/AppContext'
+import { Link } from 'react-router-dom'
 
 function Hero() {
+  const {user}=useContext(MainContext)
   return (
     <div className='flex w-full h-full justify-center flex-col items-center gap-y-4 relative'>
         <div className='flex flex-col gap-x-2 justify-center  text-[60px] font-bold  md:scale-100 sm:scale-75 scale-50 relative'>
@@ -15,7 +18,8 @@ function Hero() {
             <p className='blue-gradient text-transparent bg-clip-text'>You</p>
             </div>
         </div>
-        <button className='blue-gradient flex-shrink-0 text-[30px] md:scale-100 sm:scale-75 scale-50   font-semibold text-white  px-4 py-2 rounded-lg shadow-md shadow-neutral-400'>Get Started</button>
+        <Link to={user?'/setup_profile':'signup'} ><button className='blue-gradient flex-shrink-0 text-[30px] md:scale-100 sm:scale-75 scale-50   font-semibold text-white  px-4 py-2 rounded-lg shaGet Starteddow-md shadow-neutral-400'>{user?'Setup Profile':'Get Started'}</button>
+        </Link>
     </div>
   )
 }

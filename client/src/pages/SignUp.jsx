@@ -1,14 +1,18 @@
 import React from 'react'
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import axios from 'axios';
 function SignUp() {
+    const Navigate=useNavigate()
     const handleSubmit=async(e)=>{
         await e.preventDefault();
         const formData=new FormData(e.target);
         const payload=Object.fromEntries(formData);
         const res=await axios.post('/signup',payload,{headers:{"Content-Type":"application/x-www-form-urlencoded"}})
         setStatus(res.data)
+        setTimeout(()=>{
+            Navigate('/')
+        },1800)
     }
     const [status,setStatus]=useState('');
   return (
@@ -24,7 +28,7 @@ function SignUp() {
                     <label htmlFor="Password">Password</label>
                     <input type="password" name="Password" placeholder="Enter text" required/>
                     <Link to='/login'>Already have an account?Login.</Link>
-                    <button type="submit" className="p-4 text-[20px] blue-gradient text-white rounded-md font-bold">SignUp</button>
+                    <button type="submit" className="p-4 text-[20px] blue-gradient text-white rounded-md shadow-md shadow-neutral-300 font-bold">SignUp</button>
                 </form>
                 <h2 className="text-[18px] w-full">{status}</h2>
             </div>

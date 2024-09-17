@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {Link} from "react-router-dom"
+import {Link,useNavigate} from "react-router-dom"
 import axios from "axios"
 function Login() {
-   const [status,setStatus]=useState('');
-  const handleSubmit=async(e)=>{
+    const Navigate=useNavigate()
+    const [status,setStatus]=useState('');
+    const handleSubmit=async(e)=>{
     await e.preventDefault();
     const formData=new FormData(e.target);
     const payload=Object.fromEntries(formData);
     const res=await axios.post('/login',payload,{headers:{"Content-Type":"application/x-www-form-urlencoded"}})
     setStatus(res.data)
+    setTimeout(()=>{
+      Navigate('/')
+  },1800)
   }
 
  
@@ -23,7 +27,7 @@ function Login() {
                 <label htmlFor="Password">Password</label>
                 <input type="password" name="Password" placeholder="Enter text" required/>
                 <Link to='/signup'>Dont have an account?.SignUp</Link>
-                <button type="submit" className="p-4 text-[20px] blue-gradient text-white rounded-md font-bold">Login</button>
+                <button type="submit" className="p-4 text-[20px] blue-gradient text-white rounded-md shadow-md shadow-neutral-300 font-bold">Login</button>
             </form>
             <h2 className="text-[18px] w-full">{status}</h2>
         </div>

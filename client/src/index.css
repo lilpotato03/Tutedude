@@ -7,7 +7,7 @@
     @apply w-[100vw] h-[100vh] bg-white flex p-5 justify-center
   }
   .Login , .SignUp {
-    @apply flex h-full w-full max-w-[30rem]  bg-neutral-100 rounded-lg justify-center p-4
+    @apply flex h-full w-full max-w-[30rem]  bg-neutral-100 rounded-lg justify-center p-4 shadow-md shadow-neutral-300
   }
   .Home ,.Setup_Profile{
     @apply flex h-full w-full items-center p-4 flex-col gap-y-4
@@ -21,4 +21,11 @@
   .blue-gradient{
     @apply bg-gradient-to-r from-sky-400   to-indigo-700 
   }
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
