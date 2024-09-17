@@ -62,6 +62,13 @@ async function verifyToken(req,res,next){
     }
 }
 //Routes
+app.get('/',async(req,res)=>{
+    try{
+        res.send('You hit the server succesfully')
+    }catch(e){
+        res.send('Failed to connect to server properly')
+    }
+})
 app.post('/signup',async(req,res)=>{
     try{
         const data=req.body;
