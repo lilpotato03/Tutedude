@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "https://tutedudebackend.vercel.app/"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}
